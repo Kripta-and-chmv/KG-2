@@ -9,10 +9,10 @@ namespace KG_2
     class Point
     {
         //Point's coordinates
-        public int x;
-        public int y ;
+        public double x;
+        public double y ;
         
-        public Point(int x_, int y_)
+        public Point(double x_, double y_)
         {
             x = x_;
             y = y_;
@@ -22,12 +22,12 @@ namespace KG_2
     {
         public Point center;
         public Point[] nodes = new Point[4];
-        private int _radius;
+        private double _radius;
 
         public Square(Point x, Point r)
         {
             center = x;
-            _radius = Convert.ToInt32(Math.Sqrt(Math.Pow(center.x-r.x, 2) + Math.Pow(center.y - r.y, 2)));
+            _radius = Math.Sqrt(Math.Pow(center.x-r.x, 2) + Math.Pow(center.y - r.y, 2));
            
             SetNods();
         }
