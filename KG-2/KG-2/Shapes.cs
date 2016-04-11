@@ -30,7 +30,7 @@ namespace KG_2
         {
             //if (_angle + x >= 360)
             //    _angle += x - 360;
-            else
+            //else
                 _angle += x;
         }
         public double GetAngle()
