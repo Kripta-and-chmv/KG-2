@@ -62,6 +62,7 @@
             this.btnZoomL.TabIndex = 1;
             this.btnZoomL.Text = "+";
             this.btnZoomL.UseVisualStyleBackColor = true;
+            this.btnZoomL.Click += new System.EventHandler(this.btnZoomL_Click);
             // 
             // btnZoomS
             // 
@@ -71,6 +72,7 @@
             this.btnZoomS.TabIndex = 1;
             this.btnZoomS.Text = "-";
             this.btnZoomS.UseVisualStyleBackColor = true;
+            this.btnZoomS.Click += new System.EventHandler(this.btnZoomS_Click);
             // 
             // btnRitateL
             // 

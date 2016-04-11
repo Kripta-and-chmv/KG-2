@@ -21,8 +21,25 @@ namespace KG_2
     class Square
     {
         public Point center;
+        private double _angle = 0;
         public Point[] nodes = new Point[4];
         private double _radius;
+        private double _zoom =1;
+
+        public void SetAngle(double x)
+        {
+            //if (_angle + x >= 360)
+            //    _angle += x - 360;
+            else
+                _angle += x;
+        }
+        public double GetAngle()
+        {
+            return _angle*Math.PI/180;
+        }
+        public void SetZoom(double x) { if(_zoom+x>0) _zoom += x; }
+        public double GetZoom() { return _zoom; }
+
 
         public Square(Point x, Point r)
         {

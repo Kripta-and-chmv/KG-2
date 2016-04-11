@@ -57,6 +57,7 @@ namespace KG_2
                     tmp_points.Clear();
                     lstbxSquares.Items.Add("Square №" + squares.Count.ToString());
                     activeSquare = squares.Count-1;
+                    lstbxSquares.SelectedIndex = activeSquare;
                 }
                 else//добавление новой точки 
                     tmp_points.Add(new Point(x, y));
@@ -72,32 +73,57 @@ namespace KG_2
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.PointSize(6);
             
-            GL.Begin(PrimitiveType.Quads);
             //отрисовка квадратов
             foreach (var square in squares)
             {
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.PushMatrix();
+
+                GL.Translate(square.center.x, square.center.y, 0);
+                GL.Scale(square.GetZoom(), square.GetZoom(), 1);
+                GL.Rotate(square.GetAngle(), 0, 0, 1);
+                GL.Translate(-square.center.x, -square.center.y, 0);
+
+                GL.Begin(PrimitiveType.Quads);
+
+
                 GL.Color3(Color.Black);
                 foreach (var node in square.nodes)
                 {
                     GL.Color3(Color.Black);
                     GL.Vertex2(node.x, node.y);
                 }
+                GL.End();
+                GL.PopMatrix();
+
             }
-            GL.End();
+            //отрисовка буферных точек
             GL.Begin(PrimitiveType.Points);
-            foreach (var pt in tmp_points)//отрисовка буферных точек
+            foreach (var pt in tmp_points)
             {
                 GL.Color3(Color.Violet);
                 GL.Vertex2(pt.x, pt.y);
             }
-            if(activeSquare>=0)
-                foreach (var node in squares[activeSquare].nodes) //отрисовка точек активного квадрата
+            GL.End();
+            //отрисовка точек активного квадрата
+            if (activeSquare >= 0)
+            {
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.PushMatrix();
+                GL.Translate(squares[activeSquare].center.x, squares[activeSquare].center.y, 0);
+                GL.Scale(squares[activeSquare].GetZoom(), squares[activeSquare].GetZoom(), 1);
+                GL.Rotate(squares[activeSquare].GetAngle(), 0, 0, 1);
+                GL.Translate(-squares[activeSquare].center.x, -squares[activeSquare].center.y, 0);
+                GL.Begin(PrimitiveType.Points);
+                foreach (var node in squares[activeSquare].nodes) 
                 {
                     GL.Color3(Color.Violet);
                     GL.Vertex2(node.x, node.y);
                 }
+                GL.End();
+                GL.PopMatrix();
+            }
 
-            GL.End();
         }
 
         private void lstbxSquares_SelectedIndexChanged(object sender, EventArgs e)
@@ -112,25 +138,26 @@ namespace KG_2
 
         private void btnRotateR_Click(object sender, EventArgs e)
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.PushMatrix();
-            GL.Translate(0,0,0);
-            GL.Rotate(5, 0, 0, 1);
-            GL.Begin(PrimitiveType.Quads);
-            foreach (var node in squares[activeSquare].nodes) 
-            {
-                GL.Color3(Color.Black);
-                GL.Vertex2(node.x, node.y);
-            }
-            GL.End();
 
-            GL.PopMatrix();
+            if (activeSquare >= 0)
+                squares[activeSquare].SetAngle(-360);
             
         }
 
         private void btnRitateL_Click(object sender, EventArgs e)
         {
+            if (activeSquare >= 0)
+                squares[activeSquare].SetAngle(360);
+        }
 
+        private void btnZoomL_Click(object sender, EventArgs e)
+        {
+            squares[activeSquare].SetZoom(0.2);
+        }
+
+        private void btnZoomS_Click(object sender, EventArgs e)
+        {
+            squares[activeSquare].SetZoom(-0.2);
         }
     }
 }
