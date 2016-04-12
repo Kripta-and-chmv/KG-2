@@ -13,7 +13,10 @@ namespace KG_2
 {
     public partial class Form1 : Form
     {
+         
+
         bool loaded = false;
+        private double dk = 50;
         private List<Square> squares = new List<Square>();
         private List<Point> tmp_points = new List<Point>();
         private int activeSquare=-1;
@@ -21,7 +24,19 @@ namespace KG_2
         public Form1()
         {
             InitializeComponent();
+            this.MouseWheel += new MouseEventHandler(Form1_MouseWheel);
         }
+        void Form1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                if (dk - 5 > 0)
+                    dk -= 5;
+            }
+            else
+                dk += 5;
+        }
+        
         private void timer1_Tick(object sender, EventArgs e)
         {
            glControl1.Invalidate();
@@ -62,6 +77,10 @@ namespace KG_2
                 else//добавление новой точки 
                     tmp_points.Add(new Point(x, y));
             }
+            if (e.Button == MouseButtons.XButton1)
+                dk += 5;
+            if (e.Button == MouseButtons.XButton2)
+                dk -= 5;
 
         }
         private void glControl1_Paint(object sender, PaintEventArgs e)
@@ -72,59 +91,26 @@ namespace KG_2
             GL.ClearColor(Color.White);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.PointSize(6);
-            
-            //отрисовка квадратов
-            foreach (var square in squares)
+            double kx = 0, ky = 0;
+            for (ky = 0; ky < glControl1.Height; ky += dk)
             {
-                GL.MatrixMode(MatrixMode.Modelview);
-                GL.PushMatrix();
-
-                GL.Translate(square.center.x, square.center.y, 0);
-                GL.Scale(square.GetZoom(), square.GetZoom(), 1);
-                GL.Rotate(square.GetAngle(), 0, 0, 1);
-                GL.Translate(-square.center.x, -square.center.y, 0);
-
-                GL.Begin(PrimitiveType.Quads);
-
-
-                GL.Color3(Color.Black);
-                foreach (var node in square.nodes)
+                for (kx = 0; kx < glControl1.Width; kx += dk)
                 {
+                    GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
+                    GL.Begin(PrimitiveType.Quads);
                     GL.Color3(Color.Black);
-                    GL.Vertex2(node.x, node.y);
-                }
-                GL.End();
-                GL.PopMatrix();
+                    GL.Vertex2(kx, ky);
+                    GL.Vertex2(kx + dk, ky);
+                    GL.Vertex2(kx + dk, ky + dk);
+                    GL.Vertex2(kx, ky + dk);
+                    GL.End();
 
-            }
-            //отрисовка буферных точек
-            GL.Begin(PrimitiveType.Points);
-            foreach (var pt in tmp_points)
-            {
-                GL.Color3(Color.Violet);
-                GL.Vertex2(pt.x, pt.y);
-            }
-            GL.End();
-            //отрисовка точек активного квадрата
-            if (activeSquare >= 0)
-            {
-                GL.MatrixMode(MatrixMode.Modelview);
-                GL.PushMatrix();
-                GL.Translate(squares[activeSquare].center.x, squares[activeSquare].center.y, 0);
-                GL.Scale(squares[activeSquare].GetZoom(), squares[activeSquare].GetZoom(), 1);
-                GL.Rotate(squares[activeSquare].GetAngle(), 0, 0, 1);
-                GL.Translate(-squares[activeSquare].center.x, -squares[activeSquare].center.y, 0);
-                GL.Begin(PrimitiveType.Points);
-                foreach (var node in squares[activeSquare].nodes) 
-                {
-                    GL.Color3(Color.Violet);
-                    GL.Vertex2(node.x, node.y);
                 }
-                GL.End();
-                GL.PopMatrix();
             }
-
         }
+            
+
+        
 
         private void lstbxSquares_SelectedIndexChanged(object sender, EventArgs e)
         {
