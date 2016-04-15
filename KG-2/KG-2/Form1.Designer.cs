@@ -36,14 +36,18 @@
             this.btnRitateL = new System.Windows.Forms.Button();
             this.btnRotateR = new System.Windows.Forms.Button();
             this.lstbxSquares = new System.Windows.Forms.ListBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.chckbxMode = new System.Windows.Forms.CheckBox();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // glControl1
             // 
+            this.glControl1.AutoSize = true;
             this.glControl1.BackColor = System.Drawing.Color.Black;
-            this.glControl1.Location = new System.Drawing.Point(39, 24);
+            this.glControl1.Location = new System.Drawing.Point(6, 6);
             this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(668, 431);
+            this.glControl1.Size = new System.Drawing.Size(680, 430);
             this.glControl1.TabIndex = 0;
             this.glControl1.VSync = false;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
@@ -103,20 +107,43 @@
             this.lstbxSquares.TabIndex = 2;
             this.lstbxSquares.SelectedIndexChanged += new System.EventHandler(this.lstbxSquares_SelectedIndexChanged);
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.glControl1);
+            this.panel1.Location = new System.Drawing.Point(12, 35);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(711, 438);
+            this.panel1.TabIndex = 3;
+            // 
+            // chckbxMode
+            // 
+            this.chckbxMode.AutoSize = true;
+            this.chckbxMode.Location = new System.Drawing.Point(730, 112);
+            this.chckbxMode.Name = "chckbxMode";
+            this.chckbxMode.Size = new System.Drawing.Size(80, 17);
+            this.chckbxMode.TabIndex = 4;
+            this.chckbxMode.Text = "checkBox1";
+            this.chckbxMode.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(954, 486);
+            this.Controls.Add(this.chckbxMode);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.lstbxSquares);
             this.Controls.Add(this.btnRotateR);
             this.Controls.Add(this.btnRitateL);
             this.Controls.Add(this.btnZoomS);
             this.Controls.Add(this.btnZoomL);
-            this.Controls.Add(this.glControl1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -129,6 +156,8 @@
         private System.Windows.Forms.Button btnRitateL;
         private System.Windows.Forms.Button btnRotateR;
         private System.Windows.Forms.ListBox lstbxSquares;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox chckbxMode;
     }
 }
 

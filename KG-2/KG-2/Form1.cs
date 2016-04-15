@@ -13,28 +13,42 @@ namespace KG_2
 {
     public partial class Form1 : Form
     {
-         
 
+        Point p = new Point(0, 0);
         bool loaded = false;
-        private double dk = 50;
+        int height = 86, width = 136;
+        int pixelSide = 5;
         private List<Square> squares = new List<Square>();
         private List<Point> tmp_points = new List<Point>();
+        private List<Square> squaresRast = new List<Square>();
+        private List<Point> tmp_pointsRast = new List<Point>();
         private int activeSquare=-1;
 
         public Form1()
         {
             InitializeComponent();
-            this.MouseWheel += new MouseEventHandler(Form1_MouseWheel);
+            glControl1.MouseWheel += new MouseEventHandler(glControl1_MouseWheel);
         }
-        void Form1_MouseWheel(object sender, MouseEventArgs e)
+        void glControl1_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta < 0)
             {
-                if (dk - 5 > 0)
-                    dk -= 5;
+                if (pixelSide - 5 > 0)
+                {
+                    pixelSide -= 5;
+                    glControl1.Height -= height;
+                    glControl1.Width -= width;
+                }
             }
             else
-                dk += 5;
+            {
+                if (pixelSide + 5 < 100)
+                {
+                    pixelSide += 5;
+                    glControl1.Height += height;
+                    glControl1.Width += width;
+                }
+            }
         }
         
         private void timer1_Tick(object sender, EventArgs e)
@@ -62,27 +76,49 @@ namespace KG_2
         }
         private void glControl1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)//добавление примитивов
+            if (e.Button == MouseButtons.Left) //добавление примитивов
             {
-                int x = e.X, y = glControl1.Height - e.Y;
-                if (tmp_points.Count == 1)//добавление нового квалрата
+                if (chckbxMode.Checked)
                 {
-                    tmp_points.Add(new Point(x, y));
-                    squares.Add(new Square(tmp_points[0], tmp_points[1]));
-                    tmp_points.Clear();
-                    lstbxSquares.Items.Add("Square №" + squares.Count.ToString());
-                    activeSquare = squares.Count-1;
-                    lstbxSquares.SelectedIndex = activeSquare;
+                    double dx = glControl1.Width/width, dy = glControl1.Height/height;
+
+                    int x = (int) (e.X/dx), y = (int) ((glControl1.Height - e.Y)/dy);
+
+                    p = new Point(x, y);
+                    if (tmp_pointsRast.Count == 0)
+                    {
+                        tmp_pointsRast.Add(p);
+                    }
+                    else
+                    {
+                        tmp_pointsRast.Add(p);
+                        squaresRast.Add(new Square(tmp_pointsRast[0], tmp_pointsRast[1]));
+                        tmp_pointsRast.Clear();
+                    }
                 }
-                else//добавление новой точки 
-                    tmp_points.Add(new Point(x, y));
+                else
+                {
+                    if (e.Button == MouseButtons.Left)//добавление примитивов
+                    {
+                        int x = e.X, y = glControl1.Height - e.Y;
+                        if (tmp_points.Count == 1)//добавление нового квалрата
+                        {
+                            tmp_points.Add(new Point(x, y));
+                            squares.Add(new Square(tmp_points[0], tmp_points[1]));
+                            tmp_points.Clear();
+                            lstbxSquares.Items.Add("Square №" + squares.Count.ToString());
+                            activeSquare = squares.Count - 1;
+                            lstbxSquares.SelectedIndex = activeSquare;
+                        }
+                        else//добавление новой точки 
+                            tmp_points.Add(new Point(x, y));
+                    }
+                }
             }
-            if (e.Button == MouseButtons.XButton1)
-                dk += 5;
-            if (e.Button == MouseButtons.XButton2)
-                dk -= 5;
+
 
         }
+        
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
             if (!loaded)
@@ -91,26 +127,96 @@ namespace KG_2
             GL.ClearColor(Color.White);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.PointSize(6);
-            double kx = 0, ky = 0;
-            for (ky = 0; ky < glControl1.Height; ky += dk)
-            {
-                for (kx = 0; kx < glControl1.Width; kx += dk)
-                {
-                    GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
-                    GL.Begin(PrimitiveType.Quads);
-                    GL.Color3(Color.Black);
-                    GL.Vertex2(kx, ky);
-                    GL.Vertex2(kx + dk, ky);
-                    GL.Vertex2(kx + dk, ky + dk);
-                    GL.Vertex2(kx, ky + dk);
-                    GL.End();
 
+            if (chckbxMode.Checked)
+            {
+
+
+                //рисование сетки
+                SetupViewport();
+                Draw.Grid(glControl1.Height, glControl1.Width, height, width, pixelSide);
+                //рисование квадратов
+
+                foreach (var square in squaresRast)
+                {
+                    Draw.Square(square, pixelSide);
                 }
             }
+            else
+            {
+                //отрисовка квадратов
+                foreach (var square in squares)
+                {
+                    GL.MatrixMode(MatrixMode.Modelview);
+                    GL.PushMatrix();
+
+                    GL.Translate(square.center.x, square.center.y, 0);
+                    GL.Scale(square.GetZoom(), square.GetZoom(), 1);
+                    GL.Rotate(square.GetAngle(), 0, 0, 1);
+                    GL.Translate(-square.center.x, -square.center.y, 0);
+
+                    GL.Begin(PrimitiveType.Quads);
+
+
+                    GL.Color3(Color.Black);
+                    foreach (var node in square.nodes)
+                    {
+                        GL.Color3(Color.Black);
+                        GL.Vertex2(node.x, node.y);
+                    }
+                    GL.End();
+                    GL.PopMatrix();
+
+                }
+                //отрисовка буферных точек
+                GL.Begin(PrimitiveType.Points);
+                foreach (var pt in tmp_points)
+                {
+                    GL.Color3(Color.Violet);
+                    GL.Vertex2(pt.x, pt.y);
+                }
+                GL.End();
+                //отрисовка точек активного квадрата
+                if (activeSquare >= 0)
+                {
+                    GL.MatrixMode(MatrixMode.Modelview);
+                    GL.PushMatrix();
+                    GL.Translate(squares[activeSquare].center.x, squares[activeSquare].center.y, 0);
+                    GL.Scale(squares[activeSquare].GetZoom(), squares[activeSquare].GetZoom(), 1);
+                    GL.Rotate(squares[activeSquare].GetAngle(), 0, 0, 1);
+                    GL.Translate(-squares[activeSquare].center.x, -squares[activeSquare].center.y, 0);
+                    GL.Begin(PrimitiveType.Points);
+                    foreach (var node in squares[activeSquare].nodes)
+                    {
+                        GL.Color3(Color.Violet);
+                        GL.Vertex2(node.x, node.y);
+                    }
+                    GL.End();
+                    GL.PopMatrix();
+                }
+            }
+
         }
+        //public void DrawGrid()
+        //{
             
 
-        
+        //    GL.Color3(Color.Black);
+        //    GL.Begin(PrimitiveType.Lines);
+
+        //    for (int i = 0, j = 0; j < width; i += pixelSide, j++)
+        //    {
+        //        GL.Vertex2(i, 0);
+        //        GL.Vertex2(i, glControl1.Height);
+        //    }
+
+        //    for (int i = 0, j = 0; j < height; i += pixelSide, j++)
+        //    {
+        //        GL.Vertex2(0, i);
+        //        GL.Vertex2(glControl1.Width, i);
+        //    }
+        //    GL.End();
+        //}
 
         private void lstbxSquares_SelectedIndexChanged(object sender, EventArgs e)
         {

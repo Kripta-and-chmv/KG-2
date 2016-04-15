@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 
 namespace KG_2
 {
-    class Point
+    public class Point
     {
         //Point's coordinates
         public double x;
         public double y ;
-        
         public Point(double x_, double y_)
         {
             x = x_;
             y = y_;
         }
     }
-    class Square
+    public class Square
     {
         public Point center;
         private double _angle = 0;
         public Point[] nodes = new Point[4];
+        public Point pixel = new Point(0, 0);
+
         private double _radius;
         private double _zoom =1;
 
