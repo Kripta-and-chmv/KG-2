@@ -14,72 +14,156 @@ namespace KG_2
     public static class Draw
     {
        
-        public static void Pixel(Point node, double pixelSide)
+        public static void Pixel(Point node, double pixelSide, Color col)
         {
             GL.Begin(PrimitiveType.Quads);
-            GL.Color3(Color.Black);
+            GL.Color3(col);
             GL.Vertex2(pixelSide * node.x, pixelSide * node.y);
             GL.Vertex2(pixelSide * (node.x + 1), pixelSide * node.y);
             GL.Vertex2(pixelSide * (node.x + 1), pixelSide * (node.y + 1));
             GL.Vertex2(pixelSide * node.x, pixelSide * (node.y + 1));
             GL.End();
         }
-        public static void Square(Square sq, int pixelSide)
+        public static void RastSquare(Square sq, int pixelSide, bool active)
         {
-            //отрисовка вершин
-            foreach (var node in sq.nodes)
-            {
-                //Point pixel = new Point(Math.Truncate(node.x / pixelSide), Math.Truncate(node.y / pixelSide));
-                Pixel(node, pixelSide);
-            }
             //отрисовка граней
-           
-            BresenhamsLine(sq.nodes[0], sq.nodes[1], pixelSide, Color.Red);
-            BresenhamsLine(sq.nodes[1], sq.nodes[2], pixelSide, Color.Red);
-            BresenhamsLine(sq.nodes[2], sq.nodes[0], pixelSide, Color.Red);
-            BresenhamsLine(sq.nodes[3], sq.nodes[2], pixelSide, Color.Red);
-
-
-
-        }
-        static void swap<T>(ref T lhs, ref T rhs)
-        {
-            T temp;
-            temp = lhs;
-            lhs = rhs;
-            rhs = temp;
-        }
-        public static void BresenhamsLine(Point p0, Point p1, int pixelSide, Color c)
-        {
-            var steep = Math.Abs(p1.y - p0.y) > Math.Abs(p1.x - p0.x);
-            Point buf0 = p0;
-            Point buf1 = p1;
-            if (steep)
+            for (int i = 0; i < 4; i++)
             {
-                swap(ref buf0.x, ref buf0.y);
-                swap(ref buf1.x, ref buf1.y);
+                int j = i + 1;
+                if (j == 4) j = 0;
+                    BresenhamsLine(sq.nodes[i], sq.nodes[j], pixelSide, sq.GetColor());
             }
-            if (buf0.x > buf1.x)
+            if (sq.filled)
+                Fill(sq, pixelSide);
+            //отрисовка вершин
+            if(active)
+                foreach (var node in sq.nodes)
+                {
+                    //Point pixel = new Point(Math.Truncate(node.x), Math.Truncate(node.y ));
+                    Color c = Color.Red;
+                    if (sq.GetColor() == Color.Red)
+                        c = Color.Blue;
+                    Pixel(node, pixelSide, c);
+                }
+        }
+
+       
+
+        public static void SimpleSquare(List<Square> squares, List<Point> tmp_points, int activeSquare)
+        {
+            foreach (var square in squares)
             {
-                swap(ref buf0.x, ref buf1.x);
-                swap(ref buf0.y, ref buf1.y);
+                if (square.filled)
+                    GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+                else
+                    GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.PushMatrix();
+
+                GL.Translate(square.center.x, square.center.y, 0);
+                GL.Scale(square.GetZoom(), square.GetZoom(), 1);
+                GL.Rotate(square.GetAngle(), 0, 0, 1);
+                GL.Translate(-square.center.x, -square.center.y, 0);
+                GL.Begin(PrimitiveType.Quads);
+
+                GL.Color3(square.GetColor());
+                foreach (var node in square.nodes)
+                {
+                    GL.Color3(square.GetColor());
+                    GL.Vertex2(node.x, node.y);
+                }
+                GL.End();
+                GL.PopMatrix();
+
             }
-
-            GL.Color3(c);
-
-            
-
-            Pixel(steep ? new Point(buf0.y, buf0.x) : new Point(buf0.x, buf0.y), pixelSide);
-            Pixel(steep ? new Point(buf1.y, buf1.x) : new Point(buf1.x, buf1.y), pixelSide);
-
-            double dx = buf1.x - buf0.x;
-            double dy = buf1.y - buf0.y;
-            double gradient = dy / dx;
-            double y = buf0.y + gradient;
-            for (var x = buf0.x + 1; x <= buf1.x - 1; x++)
+            //отрисовка буферных точек
+            GL.Begin(PrimitiveType.Points);
+            foreach (var pt in tmp_points)
             {
-                Pixel(steep ? new Point(y, x) : new Point(x, y), pixelSide);
-                y += gradient;
+                GL.Color3(Color.Violet);
+                GL.Vertex2(pt.x, pt.y);
+            }
+            GL.End();
+            //отрисовка точек активного квадрата
+            if (activeSquare >= 0)
+            {
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.PushMatrix();
+                GL.Translate(squares[activeSquare].center.x, squares[activeSquare].center.y, 0);
+                GL.Scale(squares[activeSquare].GetZoom(), squares[activeSquare].GetZoom(), 1);
+                GL.Rotate(squares[activeSquare].GetAngle(), 0, 0, 1);
+                GL.Translate(-squares[activeSquare].center.x, -squares[activeSquare].center.y, 0);
+                GL.Begin(PrimitiveType.Points);
+                foreach (var node in squares[activeSquare].nodes)
+                {
+                    GL.Color3(Color.Violet);
+                    GL.Vertex2(node.x, node.y);
+                }
+                GL.End();
+                GL.PopMatrix();
+            }
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+        }
+
+        public static void BresenhamsLine(Point p0, Point p1, int pixelSide, Color col)
+        {
+            if (p0.x < p1.x)
+            {
+                if (p0.y <= p1.y)
+                {
+                    var y = p0.y;
+                    for (var x = p0.x; x <= p1.x; x++)
+                    {
+                        Pixel(new Point(x, y), pixelSide, col);
+                        y++;
+                    }
+                }
+                else
+                {
+                    var y = p0.y;
+                    for (var x = p0.x; x <= p1.x; x++)
+                    {
+                        Pixel(new Point(x, y), pixelSide, col);
+                        y--;
+                    }
+                }
+            }
+            else
+            {
+                if (p0.y <= p1.y)
+                {
+                    var y = p0.y;
+                    for (var x = p0.x; x >= p1.x; x--)
+                    {
+                        Pixel(new Point(x, y), pixelSide, col);
+                        y++;
+                    }
+                }
+                else
+                {
+                    var y = p0.y;
+                    for (var x = p0.x ; x >= p1.x ; x--)
+                    {
+                        Pixel(new Point(x, y), pixelSide, col);
+                        y--;
+                    }
+                }
+            }
+           }
+        private static void Fill(Square sq, int pixelSide)
+        {
+            Point left = sq.nodes[0], top = sq.nodes[1], right = sq.nodes[2], bottom = sq.nodes[3];
+            int k = 0;
+            for (var x = left.x; x < right.x; x++)
+            {
+                if (x <= top.x)
+                    k++;
+                else
+                    k--;
+                for (var y = left.y - k+1; y < left.y + k; y++)
+                {
+                    Pixel(new Point(x, y), pixelSide, sq.GetColor());
+                }
             }
         }
 

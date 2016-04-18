@@ -37,7 +37,12 @@
             this.btnRotateR = new System.Windows.Forms.Button();
             this.lstbxSquares = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chckbxMode = new System.Windows.Forms.CheckBox();
+            this.chckbxPaintMode = new System.Windows.Forms.CheckBox();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.btnColor = new System.Windows.Forms.Button();
+            this.chckbxMoveMode = new System.Windows.Forms.CheckBox();
+            this.btndelete = new System.Windows.Forms.Button();
+            this.chkbxFill = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +58,7 @@
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             this.glControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.glControl1_MouseClick);
+            this.glControl1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.glControl1_MouseMove);
             // 
             // timer1
             // 
@@ -101,7 +107,7 @@
             // lstbxSquares
             // 
             this.lstbxSquares.FormattingEnabled = true;
-            this.lstbxSquares.Location = new System.Drawing.Point(729, 149);
+            this.lstbxSquares.Location = new System.Drawing.Point(729, 124);
             this.lstbxSquares.Name = "lstbxSquares";
             this.lstbxSquares.Size = new System.Drawing.Size(120, 95);
             this.lstbxSquares.TabIndex = 2;
@@ -116,22 +122,69 @@
             this.panel1.Size = new System.Drawing.Size(711, 438);
             this.panel1.TabIndex = 3;
             // 
-            // chckbxMode
+            // chckbxPaintMode
             // 
-            this.chckbxMode.AutoSize = true;
-            this.chckbxMode.Location = new System.Drawing.Point(730, 112);
-            this.chckbxMode.Name = "chckbxMode";
-            this.chckbxMode.Size = new System.Drawing.Size(80, 17);
-            this.chckbxMode.TabIndex = 4;
-            this.chckbxMode.Text = "checkBox1";
-            this.chckbxMode.UseVisualStyleBackColor = true;
+            this.chckbxPaintMode.AutoSize = true;
+            this.chckbxPaintMode.Location = new System.Drawing.Point(18, 12);
+            this.chckbxPaintMode.Name = "chckbxPaintMode";
+            this.chckbxPaintMode.Size = new System.Drawing.Size(159, 17);
+            this.chckbxPaintMode.TabIndex = 4;
+            this.chckbxPaintMode.Text = "Растеризованные фигуры";
+            this.chckbxPaintMode.UseVisualStyleBackColor = true;
+            this.chckbxPaintMode.CheckedChanged += new System.EventHandler(this.chckbxPaintMode_CheckedChanged);
+            // 
+            // btnColor
+            // 
+            this.btnColor.Location = new System.Drawing.Point(741, 327);
+            this.btnColor.Name = "btnColor";
+            this.btnColor.Size = new System.Drawing.Size(95, 23);
+            this.btnColor.TabIndex = 5;
+            this.btnColor.Text = "выбрать цвет";
+            this.btnColor.UseVisualStyleBackColor = true;
+            this.btnColor.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // chckbxMoveMode
+            // 
+            this.chckbxMoveMode.AutoSize = true;
+            this.chckbxMoveMode.Location = new System.Drawing.Point(183, 12);
+            this.chckbxMoveMode.Name = "chckbxMoveMode";
+            this.chckbxMoveMode.Size = new System.Drawing.Size(138, 17);
+            this.chckbxMoveMode.TabIndex = 6;
+            this.chckbxMoveMode.Text = "Режим передвижения";
+            this.chckbxMoveMode.UseVisualStyleBackColor = true;
+            this.chckbxMoveMode.CheckedChanged += new System.EventHandler(this.chckbxMoveMode_CheckedChanged);
+            // 
+            // btndelete
+            // 
+            this.btndelete.Location = new System.Drawing.Point(741, 286);
+            this.btndelete.Name = "btndelete";
+            this.btndelete.Size = new System.Drawing.Size(96, 35);
+            this.btndelete.TabIndex = 7;
+            this.btndelete.Text = "удалить фигуру";
+            this.btndelete.UseVisualStyleBackColor = true;
+            this.btndelete.Click += new System.EventHandler(this.btndelete_Click);
+            // 
+            // chkbxFill
+            // 
+            this.chkbxFill.AutoSize = true;
+            this.chkbxFill.Location = new System.Drawing.Point(730, 101);
+            this.chkbxFill.Name = "chkbxFill";
+            this.chkbxFill.Size = new System.Drawing.Size(110, 17);
+            this.chkbxFill.TabIndex = 6;
+            this.chkbxFill.Text = "Заливка фигуры";
+            this.chkbxFill.UseVisualStyleBackColor = true;
+            this.chkbxFill.CheckedChanged += new System.EventHandler(this.chckbxMoveMode_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(954, 486);
-            this.Controls.Add(this.chckbxMode);
+            this.Controls.Add(this.btndelete);
+            this.Controls.Add(this.chkbxFill);
+            this.Controls.Add(this.chckbxMoveMode);
+            this.Controls.Add(this.btnColor);
+            this.Controls.Add(this.chckbxPaintMode);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lstbxSquares);
             this.Controls.Add(this.btnRotateR);
@@ -140,6 +193,7 @@
             this.Controls.Add(this.btnZoomL);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -157,7 +211,12 @@
         private System.Windows.Forms.Button btnRotateR;
         private System.Windows.Forms.ListBox lstbxSquares;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox chckbxMode;
+        private System.Windows.Forms.CheckBox chckbxPaintMode;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Button btnColor;
+        private System.Windows.Forms.CheckBox chckbxMoveMode;
+        private System.Windows.Forms.Button btndelete;
+        private System.Windows.Forms.CheckBox chkbxFill;
     }
 }
 
