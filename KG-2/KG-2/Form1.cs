@@ -135,6 +135,10 @@ namespace KG_2
         {
             if (!loaded)
                 return;
+            if(chckbxColorOr.Checked || chckbxColorNOr.Checked)
+                GL.Enable(EnableCap.ColorLogicOp);
+            if (!(chckbxColorOr.Checked && chckbxColorNOr.Checked))
+                GL.Disable(EnableCap.ColorLogicOp);
             glControl1.SwapBuffers();
             GL.ClearColor(Color.White);
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -249,7 +253,7 @@ namespace KG_2
 
         private void btndelete_Click(object sender, EventArgs e)
         {
-            if (!chckbxMoveMode.Checked)
+            if (chckbxPaintMode.Checked)
             {
                 squaresRast.Remove(squaresRast[lstbxSquares.SelectedIndex]);
                 lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
@@ -261,6 +265,28 @@ namespace KG_2
                 lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
                 activeSquare--;
             }
+        }
+
+        private void chckbxColorOr_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chckbxColorOr.Checked)
+            {
+                GL.Enable(EnableCap.ColorLogicOp);
+                GL.LogicOp(LogicOp.Or);
+            }
+        
+
+        }
+
+        private void chckbxColorNOr_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chckbxColorOr.Checked)
+            {
+                GL.Enable(EnableCap.ColorLogicOp);
+
+                GL.LogicOp(LogicOp.Nor);
+            }
+          
         }
 
         private void glControl1_MouseMove(object sender, MouseEventArgs e)

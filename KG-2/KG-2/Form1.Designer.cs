@@ -43,6 +43,8 @@
             this.chckbxMoveMode = new System.Windows.Forms.CheckBox();
             this.btndelete = new System.Windows.Forms.Button();
             this.chkbxFill = new System.Windows.Forms.CheckBox();
+            this.chckbxColorOr = new System.Windows.Forms.CheckBox();
+            this.chckbxColorNOr = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -175,12 +177,36 @@
             this.chkbxFill.UseVisualStyleBackColor = true;
             this.chkbxFill.CheckedChanged += new System.EventHandler(this.chckbxMoveMode_CheckedChanged);
             // 
+            // chckbxColorOr
+            // 
+            this.chckbxColorOr.AutoSize = true;
+            this.chckbxColorOr.Location = new System.Drawing.Point(730, 225);
+            this.chckbxColorOr.Name = "chckbxColorOr";
+            this.chckbxColorOr.Size = new System.Drawing.Size(80, 17);
+            this.chckbxColorOr.TabIndex = 6;
+            this.chckbxColorOr.Text = "цвет \"или\"";
+            this.chckbxColorOr.UseVisualStyleBackColor = true;
+            this.chckbxColorOr.CheckedChanged += new System.EventHandler(this.chckbxColorOr_CheckedChanged);
+            // 
+            // chckbxColorNOr
+            // 
+            this.chckbxColorNOr.AutoSize = true;
+            this.chckbxColorNOr.Location = new System.Drawing.Point(729, 248);
+            this.chckbxColorNOr.Name = "chckbxColorNOr";
+            this.chckbxColorNOr.Size = new System.Drawing.Size(95, 17);
+            this.chckbxColorNOr.TabIndex = 6;
+            this.chckbxColorNOr.Text = "цвет \"не или\"";
+            this.chckbxColorNOr.UseVisualStyleBackColor = true;
+            this.chckbxColorNOr.CheckedChanged += new System.EventHandler(this.chckbxColorNOr_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(954, 486);
             this.Controls.Add(this.btndelete);
+            this.Controls.Add(this.chckbxColorNOr);
+            this.Controls.Add(this.chckbxColorOr);
             this.Controls.Add(this.chkbxFill);
             this.Controls.Add(this.chckbxMoveMode);
             this.Controls.Add(this.btnColor);
@@ -217,6 +243,8 @@
         private System.Windows.Forms.CheckBox chckbxMoveMode;
         private System.Windows.Forms.Button btndelete;
         private System.Windows.Forms.CheckBox chkbxFill;
+        private System.Windows.Forms.CheckBox chckbxColorOr;
+        private System.Windows.Forms.CheckBox chckbxColorNOr;
     }
 }
 

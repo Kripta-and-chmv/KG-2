@@ -39,7 +39,7 @@ namespace KG_2
             if(active)
                 foreach (var node in sq.nodes)
                 {
-                    //Point pixel = new Point(Math.Truncate(node.x), Math.Truncate(node.y ));
+                    Point pixel = new Point(Math.Truncate(node.x), Math.Truncate(node.y ));
                     Color c = Color.Red;
                     if (sq.GetColor() == Color.Red)
                         c = Color.Blue;
