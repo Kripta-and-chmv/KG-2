@@ -25,16 +25,9 @@ namespace KG_2
         public Point[] nodes = new Point[4];
         public Point pixel = new Point(0, 0);
         private Color sqColor = Color.Black;
-        public void SetColor(Color cc)
-        {
-            sqColor = cc;
-        }
-        public Color GetColor()
-        {
-            return sqColor;
-        }
         public double _radius;
         private double _zoom =1;
+        public bool filled = false;
 
         public void SetAngle(double x)
         {
@@ -47,10 +40,16 @@ namespace KG_2
         {
             return _angle*Math.PI/180;
         }
+        public void SetColor(Color cc)
+        {
+            sqColor = cc;
+        }
+        public Color GetColor()
+        {
+            return sqColor;
+        }
         public void SetZoom(double x) { if(_zoom+x>0) _zoom += x; }
         public double GetZoom() { return _zoom; }
-        public bool filled = false;
-
         public Square(Point x, Point r, bool rast, int pixelSide, bool fill)
         {
             filled = fill;
@@ -66,7 +65,6 @@ namespace KG_2
 
             SetNods();
         }
-
         private void SetNods()
         {
             Point bufPoint1 = new Point(0, 0),
@@ -89,7 +87,5 @@ namespace KG_2
             
 
         }
-
-
     }
 }

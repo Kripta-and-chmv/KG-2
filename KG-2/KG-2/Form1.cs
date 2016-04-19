@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
 using System.Linq;
 using System.Text;
@@ -41,8 +42,8 @@ namespace KG_2
                 if (pixelSide - 5 > 0)
                 {
                     pixelSide -= 5;
-                    glControl1.Height -= height;
-                    glControl1.Width -= width;
+                    glControl1.Height -= 5*height;
+                    glControl1.Width -= 5*width;
                 }
             }
             else
@@ -50,8 +51,8 @@ namespace KG_2
                 if (pixelSide + 5 < 100)
                 {
                     pixelSide += 5;
-                    glControl1.Height += height;
-                    glControl1.Width += width;
+                    glControl1.Height += 5*height;
+                    glControl1.Width += 5*width;
                 }
             }
         }
@@ -163,6 +164,7 @@ namespace KG_2
             {
                 //отрисовка квадратов
                 Draw.SimpleSquare(squares, tmp_points, activeSquare);
+
             }
 
         }
@@ -253,17 +255,20 @@ namespace KG_2
 
         private void btndelete_Click(object sender, EventArgs e)
         {
-            if (chckbxPaintMode.Checked)
+            if (lstbxSquares.SelectedIndex != -1)
             {
-                squaresRast.Remove(squaresRast[lstbxSquares.SelectedIndex]);
-                lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
-                activeSquare--;
-            }
-            else
-            {
-                squares.Remove(squares[lstbxSquares.SelectedIndex]);
-                lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
-                activeSquare--;
+                if (chckbxPaintMode.Checked)
+                {
+                    squaresRast.Remove(squaresRast[lstbxSquares.SelectedIndex]);
+                    lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
+                    activeSquare--;
+                }
+                else
+                {
+                    squares.Remove(squares[lstbxSquares.SelectedIndex]);
+                    lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
+                    activeSquare--;
+                }
             }
         }
 
@@ -280,10 +285,9 @@ namespace KG_2
 
         private void chckbxColorNOr_CheckedChanged(object sender, EventArgs e)
         {
-            if (chckbxColorOr.Checked)
+            if (chckbxColorNOr.Checked)
             {
                 GL.Enable(EnableCap.ColorLogicOp);
-
                 GL.LogicOp(LogicOp.Nor);
             }
           
@@ -313,6 +317,18 @@ namespace KG_2
         private void btnZoomS_Click(object sender, EventArgs e)
         {
             squares[activeSquare].SetZoom(-0.2);
+        }
+
+        public static void LoadTexture(Bitmap bmp)
+        {
+            BitmapData data = bmp.LockBits(
+            new Rectangle(0, 0, bmp.Width, bmp.Height),
+            ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            GL.TexImage2D(TextureTarget.Texture2D, 0,
+            PixelInternalFormat.Rgb, data.Width, data.Height, 0,
+            OpenTK.Graphics.OpenGL.PixelFormat.Bgr,
+            PixelType.UnsignedByte, data.Scan0);
+            bmp.UnlockBits(data);
         }
     }
 }

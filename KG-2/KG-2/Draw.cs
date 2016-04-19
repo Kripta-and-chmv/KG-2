@@ -47,8 +47,6 @@ namespace KG_2
                 }
         }
 
-       
-
         public static void SimpleSquare(List<Square> squares, List<Point> tmp_points, int activeSquare)
         {
             foreach (var square in squares)
