@@ -28,11 +28,14 @@ namespace KG_2
         private int activeSquare=-1;
         private int countRastSquare = 0;
         private int countSquare = 0;
+        private Bitmap bmpTex;
 
         public Form1()
         {
             InitializeComponent();
             glControl1.MouseWheel += new MouseEventHandler(glControl1_MouseWheel);
+            
+
         }
 
         void glControl1_MouseWheel(object sender, MouseEventArgs e)
@@ -81,6 +84,14 @@ namespace KG_2
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             timer1.Start();
+
+            GL.Enable(EnableCap.Texture2D);
+            //Basically enables the alpha channel to be used in the color buffer
+            GL.Enable(EnableCap.Blend);
+            //The operation/order to blend
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            //Use for pixel depth comparing before storing in the depth buffer
+            //GL.Enable(EnableCap.DepthTest);
         }
 
         private void glControl1_MouseClick(object sender, MouseEventArgs e)
@@ -166,6 +177,10 @@ namespace KG_2
                 Draw.SimpleSquare(squares, tmp_points, activeSquare);
 
             }
+
+            //Текстурирование
+           
+
 
         }
 
@@ -314,21 +329,21 @@ namespace KG_2
 
         }
 
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1=new OpenFileDialog();
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                squares[lstbxSquares.SelectedIndex].filename= openFileDialog1.FileName;
+                //LoadTexture(Filename);
+            }
+        }
+
         private void btnZoomS_Click(object sender, EventArgs e)
         {
             squares[activeSquare].SetZoom(-0.2);
         }
 
-        public static void LoadTexture(Bitmap bmp)
-        {
-            BitmapData data = bmp.LockBits(
-            new Rectangle(0, 0, bmp.Width, bmp.Height),
-            ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            GL.TexImage2D(TextureTarget.Texture2D, 0,
-            PixelInternalFormat.Rgb, data.Width, data.Height, 0,
-            OpenTK.Graphics.OpenGL.PixelFormat.Bgr,
-            PixelType.UnsignedByte, data.Scan0);
-            bmp.UnlockBits(data);
-        }
+        
     }
 }

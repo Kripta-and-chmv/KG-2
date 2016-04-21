@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 
 namespace KG_2
 {
@@ -70,8 +71,12 @@ namespace KG_2
                     GL.Color3(square.GetColor());
                     GL.Vertex2(node.x, node.y);
                 }
+
+
+          
                 GL.End();
                 GL.PopMatrix();
+
 
             }
             //отрисовка буферных точек
@@ -101,6 +106,39 @@ namespace KG_2
                 GL.PopMatrix();
             }
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
+            foreach(var square in squares)
+            {
+                //if (square.filename != "")
+                //{
+                //    GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+                //    var tex = LoadTexture(square.filename);
+
+                //    GL.Color4(Color.White);
+
+                //    GL.BindTexture(TextureTarget.Texture2D, tex);
+                //    GL.Begin(PrimitiveType.Quads);
+                //    {
+                //        GL.TexCoord2(0, 0);
+                //        GL.Vertex3(square.nodes[0].x, square.nodes[0].y, 0);
+                //        GL.TexCoord2(1, 0);
+                //        GL.Vertex3(square.nodes[1].x, square.nodes[1].y, 0);
+                //        GL.TexCoord2(1, 1);
+                //        GL.Vertex3(square.nodes[2].x, square.nodes[2].y, 0);
+                //        GL.TexCoord2(0, 1);
+                //        GL.Vertex3(square.nodes[3].x, square.nodes[3].y, 0);
+                //        //foreach (var node in square.nodes)
+                //        //{
+                //        //    GL.TexCoord2(node.x, node.y);
+                //        //}
+                //    }
+                //    GL.End();
+                //    GL.BindTexture(TextureTarget.Texture2D, 0);
+
+                //}
+
+            }
         }
 
         public static void BresenhamsLine(Point p0, Point p1, int pixelSide, Color col)
@@ -182,6 +220,27 @@ namespace KG_2
                 GL.Vertex2(width, i);
             }
             GL.End();
+        }
+
+        public static int LoadTexture(string filename)
+        {
+            GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
+
+            var id = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, id);
+            var bmp = new Bitmap(filename);
+            var bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0,
+                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
+
+            bmp.UnlockBits(bmpData);
+            bmp.Dispose();
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            return id;
         }
     }
 }

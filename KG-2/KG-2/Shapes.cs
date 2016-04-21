@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 
 namespace KG_2
 {
@@ -28,6 +29,7 @@ namespace KG_2
         public double _radius;
         private double _zoom =1;
         public bool filled = false;
+        public string filename = "";
 
         public void SetAngle(double x)
         {
