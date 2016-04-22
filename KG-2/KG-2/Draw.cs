@@ -71,10 +71,36 @@ namespace KG_2
                     GL.Color3(square.GetColor());
                     GL.Vertex2(node.x, node.y);
                 }
-
-
           
                 GL.End();
+                GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
+
+                if (square.filename != "")
+                {
+                    GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+                    var tex = LoadTexture(square.filename);
+
+                    GL.Color4(Color.White);
+
+                    GL.BindTexture(TextureTarget.Texture2D, tex);
+                    GL.Begin(PrimitiveType.Quads);
+                    {
+                        GL.TexCoord2(0, 0);
+                        GL.Vertex3(square.nodes[0].x, square.nodes[0].y, 0);
+                        GL.TexCoord2(1, 0);
+                        GL.Vertex3(square.nodes[1].x, square.nodes[1].y, 0);
+                        GL.TexCoord2(1, 1);
+                        GL.Vertex3(square.nodes[2].x, square.nodes[2].y, 0);
+                        GL.TexCoord2(0, 1);
+                        GL.Vertex3(square.nodes[3].x, square.nodes[3].y, 0);
+
+                    }
+                    GL.End();
+                    GL.BindTexture(TextureTarget.Texture2D, 0);
+
+                }
                 GL.PopMatrix();
 
 
@@ -105,7 +131,6 @@ namespace KG_2
                 GL.End();
                 GL.PopMatrix();
             }
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 
             foreach(var square in squares)
             {
@@ -128,10 +153,7 @@ namespace KG_2
                 //        GL.Vertex3(square.nodes[2].x, square.nodes[2].y, 0);
                 //        GL.TexCoord2(0, 1);
                 //        GL.Vertex3(square.nodes[3].x, square.nodes[3].y, 0);
-                //        //foreach (var node in square.nodes)
-                //        //{
-                //        //    GL.TexCoord2(node.x, node.y);
-                //        //}
+                
                 //    }
                 //    GL.End();
                 //    GL.BindTexture(TextureTarget.Texture2D, 0);

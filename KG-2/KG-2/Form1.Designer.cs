@@ -45,7 +45,7 @@
             this.chkbxFill = new System.Windows.Forms.CheckBox();
             this.chckbxColorOr = new System.Windows.Forms.CheckBox();
             this.chckbxColorNOr = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnTex = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -200,22 +200,22 @@
             this.chckbxColorNOr.UseVisualStyleBackColor = true;
             this.chckbxColorNOr.CheckedChanged += new System.EventHandler(this.chckbxColorNOr_CheckedChanged);
             // 
-            // button1
+            // btnTex
             // 
-            this.button1.Location = new System.Drawing.Point(741, 375);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.btnTex.Location = new System.Drawing.Point(741, 356);
+            this.btnTex.Name = "btnTex";
+            this.btnTex.Size = new System.Drawing.Size(95, 38);
+            this.btnTex.TabIndex = 8;
+            this.btnTex.Text = "загрузить текстуру";
+            this.btnTex.UseVisualStyleBackColor = true;
+            this.btnTex.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(954, 486);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnTex);
             this.Controls.Add(this.btndelete);
             this.Controls.Add(this.chckbxColorNOr);
             this.Controls.Add(this.chckbxColorOr);
@@ -257,7 +257,7 @@
         private System.Windows.Forms.CheckBox chkbxFill;
         private System.Windows.Forms.CheckBox chckbxColorOr;
         private System.Windows.Forms.CheckBox chckbxColorNOr;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnTex;
     }
 }
 
