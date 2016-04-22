@@ -33,9 +33,6 @@ namespace KG_2
 
         public void SetAngle(double x)
         {
-            //if (_angle + x >= 360)
-            //    _angle += x - 360;
-            //else
                 _angle += x;
         }
         public double GetAngle()

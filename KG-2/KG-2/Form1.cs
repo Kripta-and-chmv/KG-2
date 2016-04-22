@@ -40,22 +40,36 @@ namespace KG_2
 
         void glControl1_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (e.Delta < 0)
+            if (chckbxPaintMode.Checked)//для растеризованных масштабирование сетки
             {
-                if (pixelSide - 5 > 0)
+                if (e.Delta < 0)
                 {
-                    pixelSide -= 5;
-                    glControl1.Height -= 5*height;
-                    glControl1.Width -= 5*width;
+                    if (pixelSide - 5 > 0)
+                    {
+                        pixelSide -= 5;
+                        glControl1.Height -= 5*height;
+                        glControl1.Width -= 5*width;
+                    }
+                }
+                else
+                {
+                    if (pixelSide + 5 < 200)
+                    {
+                        pixelSide += 5;
+                        glControl1.Height += 5*height;
+                        glControl1.Width += 5*width;
+                    }
                 }
             }
-            else
+            else//для обычных примитивов масштабирование примитивов
             {
-                if (pixelSide + 5 < 100)
+                if (e.Delta < 0)
                 {
-                    pixelSide += 5;
-                    glControl1.Height += 5*height;
-                    glControl1.Width += 5*width;
+                    squares[activeSquare].SetZoom(-0.2);
+                }
+                else
+                {
+                    squares[activeSquare].SetZoom(0.2);
                 }
             }
         }
@@ -176,12 +190,7 @@ namespace KG_2
                 //отрисовка квадратов
                 Draw.SimpleSquare(squares, tmp_points, activeSquare);
 
-            }
-
-            //Текстурирование
-           
-
-
+            }        
         }
 
         private void lstbxSquares_SelectedIndexChanged(object sender, EventArgs e)
@@ -232,14 +241,13 @@ namespace KG_2
 
         private void chckbxPaintMode_CheckedChanged(object sender, EventArgs e)
         {
-            if (chckbxPaintMode.Checked)
+            if (chckbxPaintMode.Checked)//растеризованные
             {
-                chckbxMoveMode.Enabled = false;
+                chckbxMoveMode.Visible = false;
                 chckbxMoveMode.Checked = false;
-                btnRitateL.Enabled = false;
-                btnRotateR.Enabled = false;
-                btnZoomL.Enabled = false;
-                btnZoomS.Enabled = false;
+                groupBox1.Visible = false;
+                label6.Visible = false;
+                btnTex.Visible = false;
                 lstbxSquares.Items.Clear();
                 activeSquare = -1;
                 for (int i = 0; i < squaresRast.Count; i++)
@@ -247,13 +255,12 @@ namespace KG_2
                     lstbxSquares.Items.Add("Square №" + (i + 1).ToString());
                 }
             }
-            else
+            else//обычные примитивы
             {
-                chckbxMoveMode.Enabled = true;
-                btnRitateL.Enabled = true;
-                btnRotateR.Enabled = true;
-                btnZoomL.Enabled = true;
-                btnZoomS.Enabled = true;
+                chckbxMoveMode.Visible = true;
+                label6.Visible = true;
+                btnTex.Visible = true;
+                groupBox1.Visible = true;
                 lstbxSquares.Items.Clear();
                 activeSquare = -1;
                 for (int i = 0; i < squares.Count; i++)
@@ -263,22 +270,17 @@ namespace KG_2
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btndelete_Click(object sender, EventArgs e)
         {
             if (lstbxSquares.SelectedIndex != -1)
             {
-                if (chckbxPaintMode.Checked)
+                if (chckbxPaintMode.Checked)//удаление растеризованных
                 {
                     squaresRast.Remove(squaresRast[lstbxSquares.SelectedIndex]);
                     lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
                     activeSquare--;
                 }
-                else
+                else//удаление обычных примитивов
                 {
                     squares.Remove(squares[lstbxSquares.SelectedIndex]);
                     lstbxSquares.Items.Remove(lstbxSquares.Items[lstbxSquares.SelectedIndex]);
@@ -335,13 +337,29 @@ namespace KG_2
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 squares[lstbxSquares.SelectedIndex].filename= openFileDialog1.FileName;
-                //LoadTexture(Filename);
+                
             }
         }
 
         private void btnZoomS_Click(object sender, EventArgs e)
         {
             squares[activeSquare].SetZoom(-0.2);
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string str =  "Рисование фигуры происходит по нажатию ЛКМ. 1 точка - определяет центр фигуры, 2 - радиус\n"+
+                           "Имеется 2 режима: Рисование обычных фигур(по умолчанию), а также растеризованных.\n"+
+                           "Color-выбор цвета для фигуры.\n" +
+                         "Delete-удаление выбранного фигуры.\n" +
+                         "Cancel-отменить текущий выбор.\n" +
+                         "Mode of transportation-Вкл/выкл режима перемещение фигуры.\n" +
+                         "Color mixing - выбор логической операции для смешивания цветов.\n" +
+                         "Fill shapes-вкл/выкл закраску фигуры.\n" +
+                        "Open - Загрузка текстуры(доступно для обычных фигур).\n"+
+                        "Rotation - повотор фигуры вправо/влево.\n"+
+                        "Scaling - масштабирование фигуры.\n";
+            MessageBox.Show(str, "Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         

@@ -31,8 +31,12 @@ namespace KG_2
             for (int i = 0; i < 4; i++)
             {
                 int j = i + 1;
-                if (j == 4) j = 0;
-                    BresenhamsLine(sq.nodes[i], sq.nodes[j], pixelSide, sq.GetColor());
+                if (j == 4)
+                {
+                    j = 0;
+                    
+                }
+                BresenhamsLine(sq.nodes[i], sq.nodes[j], pixelSide, sq.GetColor());
             }
             if (sq.filled)
                 Fill(sq, pixelSide);
@@ -132,35 +136,7 @@ namespace KG_2
                 GL.PopMatrix();
             }
 
-            foreach(var square in squares)
-            {
-                //if (square.filename != "")
-                //{
-                //    GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-                //    var tex = LoadTexture(square.filename);
-
-                //    GL.Color4(Color.White);
-
-                //    GL.BindTexture(TextureTarget.Texture2D, tex);
-                //    GL.Begin(PrimitiveType.Quads);
-                //    {
-                //        GL.TexCoord2(0, 0);
-                //        GL.Vertex3(square.nodes[0].x, square.nodes[0].y, 0);
-                //        GL.TexCoord2(1, 0);
-                //        GL.Vertex3(square.nodes[1].x, square.nodes[1].y, 0);
-                //        GL.TexCoord2(1, 1);
-                //        GL.Vertex3(square.nodes[2].x, square.nodes[2].y, 0);
-                //        GL.TexCoord2(0, 1);
-                //        GL.Vertex3(square.nodes[3].x, square.nodes[3].y, 0);
-                
-                //    }
-                //    GL.End();
-                //    GL.BindTexture(TextureTarget.Texture2D, 0);
-
-                //}
-
-            }
+            
         }
 
         public static void BresenhamsLine(Point p0, Point p1, int pixelSide, Color col)
