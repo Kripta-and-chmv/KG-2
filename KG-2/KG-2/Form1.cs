@@ -29,7 +29,6 @@ namespace KG_2
         private int countRastSquare = 0;
         private int countSquare = 0;
         private Bitmap bmpTex;
-
         public Form1()
         {
             InitializeComponent();
@@ -161,10 +160,10 @@ namespace KG_2
         {
             if (!loaded)
                 return;
-            if(chckbxColorOr.Checked || chckbxColorNOr.Checked)
-                GL.Enable(EnableCap.ColorLogicOp);
-            if (!(chckbxColorOr.Checked && chckbxColorNOr.Checked))
-                GL.Disable(EnableCap.ColorLogicOp);
+            /*if(chckbxColorOr.Checked || chckbxColorNOr.Checked)
+                GL.Enable(EnableCap.ColorLogicOp);*/
+            /*if (!(chckbxColorOr.Checked && chckbxColorNOr.Checked))
+                GL.Disable(EnableCap.ColorLogicOp);*/
             glControl1.SwapBuffers();
             GL.ClearColor(Color.White);
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -289,18 +288,22 @@ namespace KG_2
             }
         }
 
-        private void chckbxColorOr_CheckedChanged(object sender, EventArgs e)
+        /*private void chckbxColorOr_CheckedChanged(object sender, EventArgs e)
         {
             if (chckbxColorOr.Checked)
             {
                 GL.Enable(EnableCap.ColorLogicOp);
                 GL.LogicOp(LogicOp.Or);
             }
+            else
+            {
+                GL.Disable(EnableCap.ColorLogicOp);
+            }
         
 
-        }
+        }*/
 
-        private void chckbxColorNOr_CheckedChanged(object sender, EventArgs e)
+       /* private void chckbxColorNOr_CheckedChanged(object sender, EventArgs e)
         {
             if (chckbxColorNOr.Checked)
             {
@@ -308,7 +311,7 @@ namespace KG_2
                 GL.LogicOp(LogicOp.Nor);
             }
           
-        }
+        }*/
 
         private void glControl1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -360,6 +363,23 @@ namespace KG_2
                         "Rotation - повотор фигуры вправо/влево.\n"+
                         "Scaling - масштабирование фигуры.\n";
             MessageBox.Show(str, "Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void OR_CheckedChanged(object sender, EventArgs e)
+        {
+            GL.Enable(EnableCap.ColorLogicOp);
+            GL.LogicOp(LogicOp.Or);
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            GL.Enable(EnableCap.ColorLogicOp);
+            GL.LogicOp(LogicOp.Nor);
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            GL.Disable(EnableCap.ColorLogicOp);
         }
 
         

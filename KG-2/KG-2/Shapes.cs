@@ -12,7 +12,7 @@ namespace KG_2
     {
         //Point's coordinates
         public double x;
-        public double y ;
+        public double y;
         public Point(double x_, double y_)
         {
             x = x_;
@@ -27,17 +27,17 @@ namespace KG_2
         public Point pixel = new Point(0, 0);
         private Color sqColor = Color.Black;
         public double _radius;
-        private double _zoom =1;
+        private double _zoom = 1;
         public bool filled = false;
         public string filename = "";
 
         public void SetAngle(double x)
         {
-                _angle += x;
+            _angle += x;
         }
         public double GetAngle()
         {
-            return _angle*Math.PI/180;
+            return _angle * Math.PI / 180;
         }
         public void SetColor(Color cc)
         {
@@ -47,18 +47,18 @@ namespace KG_2
         {
             return sqColor;
         }
-        public void SetZoom(double x) { if(_zoom+x>0) _zoom += x; }
+        public void SetZoom(double x) { if (_zoom + x > 0) _zoom += x; }
         public double GetZoom() { return _zoom; }
         public Square(Point x, Point r, bool rast, int pixelSide, bool fill)
         {
             filled = fill;
             center = x;
-            
-            _radius = Math.Sqrt(Math.Pow(center.x-r.x, 2) + Math.Pow(center.y - r.y, 2));
+
+            _radius = Math.Sqrt(Math.Pow(center.x - r.x, 2) + Math.Pow(center.y - r.y, 2));
             _radius = Math.Truncate(_radius);
             if (rast && _radius > pixelSide)
             {
-                _radius = Math.Truncate(_radius/pixelSide);
+                _radius = Math.Truncate(_radius / pixelSide);
                 _radius *= pixelSide;
             }
 
@@ -70,20 +70,20 @@ namespace KG_2
                        bufPoint2 = new Point(0, 0),
                        bufPoint3 = new Point(0, 0),
                        bufPoint4 = new Point(0, 0);
-            
-                bufPoint1.x = center.x - _radius;
-                bufPoint1.y = center.y;
-                nodes[0] = bufPoint1;
-                bufPoint2.x = center.x;
-                bufPoint2.y = center.y - _radius;
-                nodes[1] = bufPoint2;
-                bufPoint3.x = center.x + _radius;
-                bufPoint3.y = center.y;
-                nodes[2] = bufPoint3;
-                bufPoint4.x = center.x;
-                bufPoint4.y = center.y + _radius;
-                nodes[3] = bufPoint4;
-            
+
+            bufPoint1.x = center.x - _radius;
+            bufPoint1.y = center.y;
+            nodes[0] = bufPoint1;
+            bufPoint2.x = center.x;
+            bufPoint2.y = center.y - _radius;
+            nodes[1] = bufPoint2;
+            bufPoint3.x = center.x + _radius;
+            bufPoint3.y = center.y;
+            nodes[2] = bufPoint3;
+            bufPoint4.x = center.x;
+            bufPoint4.y = center.y + _radius;
+            nodes[3] = bufPoint4;
+
 
         }
     }

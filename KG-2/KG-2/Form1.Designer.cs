@@ -43,8 +43,6 @@
             this.chckbxMoveMode = new System.Windows.Forms.CheckBox();
             this.btndelete = new System.Windows.Forms.Button();
             this.chkbxFill = new System.Windows.Forms.CheckBox();
-            this.chckbxColorOr = new System.Windows.Forms.CheckBox();
-            this.chckbxColorNOr = new System.Windows.Forms.CheckBox();
             this.btnTex = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -53,20 +51,20 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OR = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // glControl1
             // 
             this.glControl1.AutoSize = true;
             this.glControl1.BackColor = System.Drawing.Color.Black;
-            this.glControl1.Location = new System.Drawing.Point(6, 6);
+            this.glControl1.Location = new System.Drawing.Point(6, 3);
             this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(680, 430);
+            this.glControl1.Size = new System.Drawing.Size(702, 447);
             this.glControl1.TabIndex = 0;
             this.glControl1.VSync = false;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
@@ -131,15 +129,15 @@
             // 
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.glControl1);
-            this.panel1.Location = new System.Drawing.Point(12, 35);
+            this.panel1.Location = new System.Drawing.Point(12, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(711, 438);
+            this.panel1.Size = new System.Drawing.Size(711, 473);
             this.panel1.TabIndex = 3;
             // 
             // chckbxPaintMode
             // 
             this.chckbxPaintMode.AutoSize = true;
-            this.chckbxPaintMode.Location = new System.Drawing.Point(163, 7);
+            this.chckbxPaintMode.Location = new System.Drawing.Point(732, 372);
             this.chckbxPaintMode.Name = "chckbxPaintMode";
             this.chckbxPaintMode.Size = new System.Drawing.Size(87, 17);
             this.chckbxPaintMode.TabIndex = 4;
@@ -160,7 +158,7 @@
             // chckbxMoveMode
             // 
             this.chckbxMoveMode.AutoSize = true;
-            this.chckbxMoveMode.Location = new System.Drawing.Point(328, 7);
+            this.chckbxMoveMode.Location = new System.Drawing.Point(732, 404);
             this.chckbxMoveMode.Name = "chckbxMoveMode";
             this.chckbxMoveMode.Size = new System.Drawing.Size(132, 17);
             this.chckbxMoveMode.TabIndex = 6;
@@ -189,31 +187,9 @@
             this.chkbxFill.UseVisualStyleBackColor = true;
             this.chkbxFill.CheckedChanged += new System.EventHandler(this.chckbxMoveMode_CheckedChanged);
             // 
-            // chckbxColorOr
-            // 
-            this.chckbxColorOr.AutoSize = true;
-            this.chckbxColorOr.Location = new System.Drawing.Point(732, 245);
-            this.chckbxColorOr.Name = "chckbxColorOr";
-            this.chckbxColorOr.Size = new System.Drawing.Size(42, 17);
-            this.chckbxColorOr.TabIndex = 6;
-            this.chckbxColorOr.Text = "OR";
-            this.chckbxColorOr.UseVisualStyleBackColor = true;
-            this.chckbxColorOr.CheckedChanged += new System.EventHandler(this.chckbxColorOr_CheckedChanged);
-            // 
-            // chckbxColorNOr
-            // 
-            this.chckbxColorNOr.AutoSize = true;
-            this.chckbxColorNOr.Location = new System.Drawing.Point(732, 268);
-            this.chckbxColorNOr.Name = "chckbxColorNOr";
-            this.chckbxColorNOr.Size = new System.Drawing.Size(68, 17);
-            this.chckbxColorNOr.TabIndex = 6;
-            this.chckbxColorNOr.Text = "NOT OR";
-            this.chckbxColorNOr.UseVisualStyleBackColor = true;
-            this.chckbxColorNOr.CheckedChanged += new System.EventHandler(this.chckbxColorNOr_CheckedChanged);
-            // 
             // btnTex
             // 
-            this.btnTex.Location = new System.Drawing.Point(730, 318);
+            this.btnTex.Location = new System.Drawing.Point(729, 328);
             this.btnTex.Name = "btnTex";
             this.btnTex.Size = new System.Drawing.Size(95, 38);
             this.btnTex.TabIndex = 8;
@@ -269,7 +245,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(729, 302);
+            this.label6.Location = new System.Drawing.Point(728, 312);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(93, 13);
             this.label6.TabIndex = 13;
@@ -289,28 +265,50 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             // 
-            // menuStrip1
+            // OR
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(965, 24);
-            this.menuStrip1.TabIndex = 15;
-            this.menuStrip1.Text = "menuStrip1";
+            this.OR.AutoSize = true;
+            this.OR.Location = new System.Drawing.Point(732, 245);
+            this.OR.Name = "OR";
+            this.OR.Size = new System.Drawing.Size(41, 17);
+            this.OR.TabIndex = 16;
+            this.OR.TabStop = true;
+            this.OR.Text = "OR";
+            this.OR.UseVisualStyleBackColor = true;
+            this.OR.CheckedChanged += new System.EventHandler(this.OR_CheckedChanged);
             // 
-            // helpToolStripMenuItem
+            // radioButton1
             // 
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(732, 268);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(67, 17);
+            this.radioButton1.TabIndex = 17;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "NOT OR";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(732, 291);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(66, 17);
+            this.radioButton2.TabIndex = 18;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Disabled";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 486);
+            this.Controls.Add(this.radioButton2);
+            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.OR);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -318,24 +316,18 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnTex);
             this.Controls.Add(this.btndelete);
-            this.Controls.Add(this.chckbxColorNOr);
-            this.Controls.Add(this.chckbxColorOr);
             this.Controls.Add(this.chkbxFill);
             this.Controls.Add(this.chckbxMoveMode);
             this.Controls.Add(this.btnColor);
             this.Controls.Add(this.chckbxPaintMode);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lstbxSquares);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -357,8 +349,6 @@
         private System.Windows.Forms.CheckBox chckbxMoveMode;
         private System.Windows.Forms.Button btndelete;
         private System.Windows.Forms.CheckBox chkbxFill;
-        private System.Windows.Forms.CheckBox chckbxColorOr;
-        private System.Windows.Forms.CheckBox chckbxColorNOr;
         private System.Windows.Forms.Button btnTex;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -367,8 +357,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.RadioButton OR;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton2;
     }
 }
 
